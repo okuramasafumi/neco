@@ -1,4 +1,6 @@
-require "neco/version"
+# frozen_string_literal: true
+
+require 'neco/version'
 
 module Neco
   class Error < StandardError; end
