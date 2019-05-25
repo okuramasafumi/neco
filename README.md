@@ -1,8 +1,6 @@
 # Neco
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/neco`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Neco is a NEo COmmand pattern library for Ruby.
 
 ## Installation
 
@@ -22,7 +20,75 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Include `Neco::Command` module and define your command with DSLs like below:
+
+```ruby
+class Foo
+  include Neco::Command
+
+  validates do |name:|
+    name == 'Tama'
+  end
+
+  main do |name:|
+    puts "Hello, #{name}!"
+  end
+end
+
+Foo.call(name: 'Tama') # => 'Hello, Tama!'
+```
+
+Here, `validates` block defines validations and `main` block defines main logic for the command (simple, right?)
+
+You can also compose multiple commands into one command using `Neco::Composition` module. Neco automatically triggers rollbacks when one of the commands raises an exception.
+
+```ruby
+class Command1
+  include Neco::Command
+
+  main do
+    set :cat_name, 'Tama'
+  end
+
+  rollback do
+    puts 'Rolling back Command1!'
+  end
+end
+
+class Command2
+  include Neco::Command
+
+  main do |cat_name:|
+    puts "Hello, #{cat_name}!"
+  end
+
+  rollback do
+    puts 'Rolling back Command2!'
+  end
+end
+
+class Command3
+  include Neco::Command
+
+  # Unused block argument
+  main do |cat_name:|
+    raise 'OMG!!!'
+  end
+end
+
+class Bar
+  include Neco::Composition
+
+  composes Command1, Command2, Command3
+end
+
+Bar.call
+# => 'Hello, Tama!'
+# => 'Rolling back Command2!'
+# => 'Rolling back Command1!'
+```
+
+See `examples` directory for details.
 
 ## Development
 
