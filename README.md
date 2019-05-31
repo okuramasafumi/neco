@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/okuramasafumi/neco.svg?branch=master)](https://travis-ci.com/okuramasafumi/neco)
+[![Maintainability](https://api.codeclimate.com/v1/badges/d011a37ef8ebf1ea2afd/maintainability)](https://codeclimate.com/github/okuramasafumi/neco/maintainability)
+
 # Neco
 
 Neco is a NEo COmmand pattern library for Ruby.
