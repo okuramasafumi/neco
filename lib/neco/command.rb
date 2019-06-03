@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'neco/container'
+require 'neco/result'
 
 module Neco
   # Command module is a basic module of Neco.
@@ -31,7 +32,6 @@ module Neco
       def call(*args, **params)
         instance = new(*args, **params)
         instance.call
-        true
       end
     end
 
@@ -55,7 +55,12 @@ module Neco
         return false unless validate
 
         main = self.class.instance_variable_get(:@main)
-        instance_exec(*@args, **@params, &main)
+        begin
+          instance_exec(*@args, **@params, &main)
+          Success.new
+        rescue StandardError => e
+          Failure.new(exception: e)
+        end
       end
 
       def validate

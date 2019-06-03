@@ -14,11 +14,13 @@ module Neco
     def call(*args, **params)
       @environment.merge!(params)
       @commands.each do |command|
-        command.call(*args, **@environment)
-        @called << command
-      rescue StandardError
-        @called.reverse_each(&:revert)
-        break
+        result = command.call(*args, **@environment)
+        if result.success?
+          @called << command
+        else
+          @called.reverse_each(&:revert)
+          break
+        end
       end
     end
 
