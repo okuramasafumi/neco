@@ -1,5 +1,6 @@
-[![Build Status](https://travis-ci.com/okuramasafumi/neco.svg?branch=master)](https://travis-ci.com/okuramasafumi/neco)
-[![Maintainability](https://api.codeclimate.com/v1/badges/d011a37ef8ebf1ea2afd/maintainability)](https://codeclimate.com/github/okuramasafumi/neco/maintainability)
+Neco is under development and will be completely rewritten.
+
+---
 
 # Neco
 
