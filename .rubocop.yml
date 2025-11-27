@@ -33,6 +33,9 @@ Layout/DotPosition:
 Layout/IndentationConsistency:
   EnforcedStyle: normal
 
+Layout/LineLength:
+  Max: 160
+
 Layout/SpaceInsideBlockBraces:
   SpaceBeforeBlockParameters: false
 
@@ -41,9 +44,6 @@ Layout/SpaceInsideHashLiteralBraces:
 
 Metrics/AbcSize:
   Max: 20
-
-Metrics/LineLength:
-  Max: 160
 
 Metrics/MethodLength:
   Max: 15
