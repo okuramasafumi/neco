@@ -1,49 +1,108 @@
+---
+inherit_gem:
+  rubocop-gem_dev: "config/rubocop.yml"
+
+inherit_mode:
+  merge:
+    - Exclude
+
+plugins:
+  - rubocop-md
+  - rubocop-minitest
+  - rubocop-performance
+  - rubocop-rake
+
 AllCops:
-  TargetRubyVersion: 3.0
   Exclude:
-    - 'examples/**/*.rb'
+    - "neco.gemspec"
+  NewCops: enable
+  EnabledByDefault: true
+  TargetRubyVersion: 3.0
 
-Style/DoubleNegation:
+# Items in Gemfile is dev dependencies and we don't have to specify versions.
+Bundler/GemVersion:
   Enabled: false
 
-Style/EmptyMethod:
-  EnforcedStyle: expanded
+# Test class is a class, but not really
+Layout/ClassStructure:
+  Exclude:
+    - "test/**/*"
 
-Style/PercentLiteralDelimiters:
-  Enabled: false
-
-Style/SymbolArray:
-  Enabled: false
-
-Style/TrailingCommaInArguments:
-  EnforcedStyleForMultiline: consistent_comma
-
-Style/TrailingCommaInArrayLiteral:
-  EnforcedStyleForMultiline: consistent_comma
-
-Style/TrailingCommaInHashLiteral:
-  EnforcedStyleForMultiline: consistent_comma
-
-Style/WordArray:
-  Enabled: false
-
-Layout/DotPosition:
-  EnforcedStyle: trailing
-
-Layout/IndentationConsistency:
-  EnforcedStyle: normal
-
+# LineLength 80 comes from restrictions in good old days.
 Layout/LineLength:
   Max: 160
 
-Layout/SpaceInsideBlockBraces:
-  SpaceBeforeBlockParameters: false
+# We'd like to write something like:
+#   assert_equal(
+#     expected,
+#     actual
+#   )
+Layout/RedundantLineBreak:
+  Exclude:
+    - "test/**/*"
 
 Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+Layout/MultilineAssignmentLayout:
+  EnforcedStyle: same_line
+
+# In README, there are multiple context and definging same constant multiple times should be allowed
+Lint/ConstantReassignment:
+  Exclude:
+    - "README.md"
+
+Lint/ConstantResolution:
   Enabled: false
 
-Metrics/AbcSize:
-  Max: 20
+# In test code we don't care about the metrics!
+Metrics:
+  Exclude:
+    - "test/**/*.rb"
 
-Metrics/MethodLength:
-  Max: 15
+# Putting extra empty line is not valuable in test
+# We prefer shorter test code
+Minitest/EmptyLineBeforeAssertionMethods:
+  Enabled: false
+
+Naming:
+  Exclude:
+    - "test/**/*"
+
+Style/ConstantVisibility:
+  Exclude:
+    - "lib/neco/version.rb"
+    - "test/**/*.rb"
+
+# In README it's so obvious
+Style/DocumentationMethod:
+  Exclude:
+    - "README.md"
+
+# I don't want to think about error class in example code
+Style/ImplicitRuntimeError:
+  Exclude:
+    - "README.md"
+
+Style/MethodCallWithArgsParentheses:
+  AllowedMethods:
+    [
+      "require",
+      "require_relative",
+      "include",
+      "extend",
+      "puts",
+      "p",
+      "warn",
+      "raise",
+      "send",
+      "public_send",
+      "alias_method",
+    ]
+  Exclude:
+    - "test/**/*.rb"
+    - "README.md"
+
+# There are so many cases we just want `if` expression!
+Style/MissingElse:
+  EnforcedStyle: case
